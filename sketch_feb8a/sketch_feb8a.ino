@@ -40,13 +40,8 @@ void loop() {
     blibkingLed();
   }
 }
-int playGame() {
-  byte score = 99;
-  //simon says game
-  return sciore;
-}
-}
 
+//move both ears to 0 then 90 then back to 0 degrees
 void wagEars() {
   leftear.write(0);
   rightEar.write(0);
@@ -55,6 +50,16 @@ void wagEars() {
   leftEar.write(0);
   rightEar.write(0);
 }
+
+}
+int playGame() {
+  byte score = 99;
+  //simon says game
+  return sciore;
+}
+}
+
+
 
 void blinkingLed() {
   byte randNumber = random(1, 3);
