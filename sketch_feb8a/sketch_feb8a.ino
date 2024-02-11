@@ -1,18 +1,18 @@
 #include <Servo.h>
 
-const byte ledPin = 13;
-const byte PAW1 = 1;  //NZQA like constants
-const byte PAW2 = 2;
-const byte PAW3 = 3;
-const byte PAW4 = 4;
+const byte ledPin = 13; //setting up LED to pin 13  //NZQA like constants
+const byte PAW1 = 1; //setting up top right paw to pin 4
+const byte PAW2 = 2; //setting up the top left paw to pin 2
+const byte PAW3 = 3; //setting up the bottom left paw to pin 3
+const byte PAW4 = 4; //setting up the bottom right paw to pin 4
 const byte LEFTEARPIN = 9;  //constant must be in caps
-const byte RIGHTEARPIN = 10;
+const byte RIGHTEARPIN = 10; //setting up the constant variable of the rightear pin to pin 10
 
-Servo leftEar;
-Servo rightEar;
+Servo leftEar; //setting up the leftear servo
+Servo rightEar; // setting up the rightear servo
 
 void setup() {
-  pinMode(ledPin, OUTPUT);
+  pinMode(ledPin, OUTPUT); //saying that the led will be outputting light
   pinMode(PAW1, INPUT);
   pinMode(PAW2, INPUT);
   pinMode(PAW3, INPUT);
