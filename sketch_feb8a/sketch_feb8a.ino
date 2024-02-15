@@ -1,10 +1,12 @@
 #include <Servo.h>
 
-const byte ledPin = 13;       //setting up LED to pin 13  //NZQA like constants
-const byte PAW1 = 1;          //setting up top right paw to pin 4
-const byte PAW2 = 2;          //setting up the top left paw to pin 2
-const byte PAW3 = 3;          //setting up the bottom left paw to pin 3
-const byte PAW4 = 4;          //setting up the bottom right paw to pin 4
+const byte SPEAKER = 3;
+const byte MIC = 2;
+const byte LEDPIN = 13;       //setting up LED to pin 13  //NZQA like constants
+const byte PAWPIN1 = 1;       //setting up top right paw to pin 4
+const byte PAWPIN2 = 2;       //setting up the top left paw to pin 2
+const byte PAWPIN3 = 3;       //setting up the bottom left paw to pin 3
+const byte PAWPIN4 = 4;       //setting up the bottom right paw to pin 4
 const byte LEFTEARPIN = 9;    //constant must be in caps
 const byte RIGHTEARPIN = 10;  //setting up the constant variable of the rightear pin to pin 10
 
@@ -13,13 +15,15 @@ Servo rightEar;  // setting up the rightear servo
 
 //setting up the pins as either inputs or outputs
 void setup() {
-  pinMode(ledPin, OUTPUT);  //saying that the led will be outputting light
-  pinMode(PAW1, INPUT);
-  pinMode(PAW2, INPUT);
-  pinMode(PAW3, INPUT);
-  pinMode(PAW4, INPUT);
+  pinMode(LEDPIN, OUTPUT);  //saying that the led will be outputting light
+  pinMode(PAWPIN1, INPUT);
+  pinMode(PAWPIN2, INPUT);
+  pinMode(PAWPIN3, INPUT);
+  pinMode(PAWPIN4, INPUT);
   leftEar.attach(LEFTEARPIN);
   rightEar.attach(RIGHTEARPIN);
+  pinMode(MIC, OUTPUT);
+  pinMode(SPEAKER, INPUT);
 }
 
 void loop() {
@@ -37,37 +41,31 @@ void loop() {
   }
   //If paw 4 is pressed then call blinkingLed method
   if (digitalRead(PAWPIN4) == HIGH) {
-    blibkingLed();
+    blinkingLed();
   }
 }
 
 //move both ears to 0 then 90 then back to 0 degrees
 void wagEars() {
-  leftear.write(0);
+  leftEar.write(0);
   rightEar.write(0);
   leftEar.write(90);
   rightEar.write(90);
   leftEar.write(0);
   rightEar.write(0);
 }
-
-}
-int playGame() {
-  byte score = 99;
-  //simon says game
-  return sciore;
-}
-}
-
-
-
+//blibk LED between 1 and 3 times
 void blinkingLed() {
-  byte randNumber = random(1, 3);
+  byte randNumber = random(1, 3);  //system chooses between
 
-  for (int i = 0; i < randNumber; i++) {}
-  digitalWrite(LEDPIN, HIGH);
-  delay(500);
-  digitalWrite(LEDPIN, LOW);
-  delay(500);
-}
+  for (int i = 0; i < randNumber; i++) {
+    digitalWrite(LEDPIN, HIGH);
+    delay(500); //delay by .5 secs
+    digitalWrite(LEDPIN, LOW);
+    delay(500);
+  }
+
+  void mic() {
+    if (MIC ==)
+  }
 }
