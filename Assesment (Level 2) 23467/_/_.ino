@@ -31,43 +31,36 @@ void loop()
 // got the two codes 
 
 
-#include <Wire.h>            // Used to establish serial communication on the I2C bus
-#include <SparkFun_TMP117.h> // Used to send and recieve specific information from our sensor
+#include <SparkFun_LPS25HB_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_LPS25HB
 
-// The default address of the device is 0x48 = (GND)
-TMP117 sensor; // Initalize sensor
+LPS25HB pressureSensor; // Create an object of the LPS25HB class
 
 void setup()
 {
-  Wire.begin();
-  Serial.begin(115200);    // Start serial communication at 115200 baud
-  Wire.setClock(400000);   // Set clock speed to be the fastest for better communication (fast mode)
+  Serial.begin(9600);
+  Serial.println("LPS25HB Pressure Sensor Example 1 - Basic Readings");
+  Serial.println();
 
-  Serial.println("TMP117 Example 1: Basic Readings");
-  if (sensor.begin() == true) // Function to check if the sensor will correctly self-identify with the proper Device ID/Address
+  Wire.begin();
+  pressureSensor.begin(); // Begin links an I2C port and I2C address to the sensor, sets an I2C speed, begins I2C on the main board, and then sets default settings
+
+  if (pressureSensor.isConnected() == false) // The library supports some different error codes such as "DISCONNECTED"
   {
-    Serial.println("Begin");
-  }
-  else
-  {
-    Serial.println("Device failed to setup- Freezing code.");
-    while (1); // Runs forever
+    Serial.println("LPS25HB disconnected. Reset the board to try again.");     // Alert the user that the device cannot be reached
+    Serial.println("Are you using the right Wire port and I2C address?");      // Suggest possible fixes
+    Serial.println("See Example2_I2C_Configuration for how to change these."); // Suggest possible fixes
+    Serial.println("");
+    while (1)
+      ;
   }
 }
 
 void loop()
 {
-  // Data Ready is a flag for the conversion modes - in continous conversion the dataReady flag should always be high
-  if (sensor.dataReady() == true) // Function to make sure that there is data ready to be printed, only prints temperature values when data is ready
-  {
-    float tempC = sensor.readTempC();
-    float tempF = sensor.readTempF();
-    // Print temperature in °C and °F
-    Serial.println(); // Create a white space for easier viewing
-    Serial.print("Temperature in Celsius: ");
-    Serial.println(tempC);
-    Serial.print("Temperature in Fahrenheit: ");
-    Serial.println(tempF);
-    delay(500); // Delay added for easier readings
-  }
+  Serial.print("Pressure in hPa: ");
+  Serial.print(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa
+  Serial.print(", Temperature (degC): ");
+  Serial.println(pressureSensor.getTemperature_degC()); // Get the temperature in degrees C
+
+  delay(40); // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
 }
