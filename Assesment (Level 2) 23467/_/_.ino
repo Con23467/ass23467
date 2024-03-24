@@ -20,7 +20,8 @@ void setup() {
 }
 
 
-
+sdCard.append(FILENAME);
+sdCard.syncFile();
 
 void loop() {
   Serial.print("Current pressure: ");
