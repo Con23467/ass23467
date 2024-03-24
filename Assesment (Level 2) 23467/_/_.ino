@@ -3,8 +3,9 @@
 #include <SparkFun_Qwiic_OpenLog_Arduino_Library.h>
 
 LPS25HB sensor;
-OpenLog sdCard;  //Create instance
+OpenLog SDcard;  //Create instance
 const String FILENAME = "rocketdata.txt";
+int myLog;
 
 void setup() {
   Serial.begin(9600);
@@ -20,19 +21,16 @@ void setup() {
 }
 
 
-sdCard.append(FILENAME);
-sdCard.syncFile();
-
 void loop() {
   Serial.print("Current pressure: ");
   Serial.print(sensor.getPressure_hPa());
   Serial.print(", Current Tmeperature (°C): ");
   Serial.println(sensor.getTemperature_degC()); //The serial print is showing us the values on a screen 
 
-  myLog.print("Current pressure: ");
-  myLog.print(sensor.getPressure_hPa());
-  myLog.print(", Current Tmeperature (°C): ");
-  myLog.println(sensor.getTemperature_degC()); // the myLog is saving the values to the SD card 
+  SDcard.print("Current pressure: ");
+  SDcard.print(sensor.getPressure_hPa());
+  SDcard.print(", Current Tmeperature (°C): ");
+  SDcard.println(sensor.getTemperature_degC()); // the myLog is saving the values to the SD card 
 
   delay(40); //every 40 milliseconds the task repeats itself, giving us new values.
 }
