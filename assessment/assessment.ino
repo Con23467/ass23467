@@ -3,10 +3,11 @@
 #include <Wire.h>
 #include <SparkFun_Qwiic_OpenLog_Arduino_Library.h>
 
+//for the delay to adjust all at same tukme
+
 LPS25HB sensor;                            //The LPS25HB is a pressure sensor wich functions as a digital output barometer
 OpenLog SDcard;                            //Create instance/labeling the Log as SDcard
 const String FILENAME = "rocketdata.txt";  //the FILENAME is being called/saved as rocketdata.txt
-int myLog;                                 //setting my Log to an integer
 
 void setup() {         //Initializes the serial moniter/sets up the serial moniter
   Serial.begin(9600);  //This tells the arduino to get ready to connect to the serial monitor
@@ -20,31 +21,37 @@ void setup() {         //Initializes the serial moniter/sets up the serial monit
     while (1)
       ;
   }
+
+  //sd card - openlog ehg 10
+
+  SDcard.append(FILENAME);
+  SDcard.println("Pressure, Temperature");
+  SDcard.syncFile();
 }
 
-void loop() {                                    //the void loop is being used to loop (repeat) the code in the loop ({}) with the serial monitor printing out the pressure and temperature values. The loop is bing used to repeatedly remeausre the values.
-  Serial.print("Current pressure: ");            //This is saying that the serial monitor needs to be outputting, "Current pressure is: " with the temperature being added in after the :, as it needs to be fetched from the next line
-  Serial.print(sensor.getPressure_hPa());        // //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
-  Serial.print(", Current Tmeperature (°C): ");  //This is saying that the serial monitor needs to be outputting, "Current Temperature is (x)" with x being added in the next line as the temperature needs to be fetched from the sensor
-  Serial.println(sensor.getTemperature_degC());  //The serial print is showing us the temperature values on the serial monitor, showing us what is being inputted
-
-  //the SDcard print and println is writing out the values for the pressure and the temperature then saving it to the SD card. The same things are happening in the next for lines as in the top four lines of code
-  SDcard.print("Current pressure: ");
-  SDcard.print(sensor.getPressure_hPa());
-  SDcard.print(", Current Tmeperature (°C): ");
-  SDcard.println(sensor.getTemperature_degC());  // the myLog is saving the values to the SD card
-
-  delay(4000);  //every 40 milliseconds the task repeats itself, giving us new values.
+void loop() {    //the void loop is being used to loop (repeat) the code in the loop ({}) with the serial monitor printing out the pressure and temperature values. The loop is bing used to repeatedly remeausre the values.
+  steez(false);  // t=debug f=launch
+  delay(4000);   //every 40 milliseconds the task repeats itself, giving us new values.
 }
 
-void steez(){
-if 
+void launch(bool debug) {
+  if (debug) {
+    Serial.print("Current pressure: ");            //This is saying that the serial monitor needs to be outputting, "Current pressure is: " with the temperature being added in after the :, as it needs to be fetched from the next line
+    Serial.print(sensor.getPressure_hPa());        // //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
+    Serial.print(", Current Tmeperature (°C): ");  //This is saying that the serial monitor needs to be outputting, "Current Temperature is (x)" with x being added in the next line as the temperature needs to be fetched from the sensor
+    Serial.println(sensor.getTemperature_degC());  //The serial print is showing us the temperature values on the serial monitor, showing us what is being inputted
 
-}else{
+  } else {
 
+    //the SDcard print and println is writing out the values for the pressure and the temperature then saving it to the SD card. The same things are happening in the next for lines as in the top four lines of code
+    // SDcard.print("Current pressure: ");
+    SDcard.print(sensor.getPressure_hPa());
+    SDcard.print(", ");
+    SDcard.println(sensor.getTemperature_degC());  // the SDcard is saving the values to the SD card
 
+    SDcard.syncFile();
+  }
 }
-
 
 
 
