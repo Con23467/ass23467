@@ -24,10 +24,9 @@ void setup() {         //Initializes the serial moniter/sets up the serial monit
 
   byte status = SDcard.getStatus();
   if (status == 0xFF)
-    ;
   {
     Serial.println("SDcard failed to respond.");
-    while (1)
+    while (1) //(pause)
       ;
   }
 
@@ -41,11 +40,11 @@ void loop() {     //the void loop is being used to loop (repeat) the code in the
   delay(4000);    //every 40 milliseconds the task repeats itself, giving us new values.
 }
 
-void launch(bool debug) {
-  if (debug == true) {
+void launch(bool debug) { //This is setting up my method for the launch sequence
+  if (debug == true) { //we are saying that when our debug is true our serial monitor will output the text that is hardcoded and then the temperature and pressure which is dependent on everything outside the rockets control 
 
-    Serial.print("Current Pressure is: ");         //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
-    Serial.println(sensor.getPressure_hPa());      //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
+    Serial.print("Current Pressure is: ");         //The serial print is printing out "Current Pressure is:" and then the following line will be outputting the current pressure
+    Serial.println(sensor.getPressure_hPa());      //The serial println is is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
     Serial.print("Current Temperature (°C)");      //The serial print is showing us the temperature values on the serial monitor, showing us what is being inputted
     Serial.println(sensor.getTemperature_degC());  //The serial print is showing us the temperature values on the serial monitor, showing us what is being inputted
 
@@ -60,5 +59,3 @@ void launch(bool debug) {
     SDcard.syncFile();
   }
 }
-
-// got the two codes
