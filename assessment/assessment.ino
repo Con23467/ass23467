@@ -21,7 +21,7 @@ void setup() {         //Initializes the serial moniter/sets up the serial monit
     while (1)
       ;
   }
-  
+
   byte status = SDcard.getStatus();
   if (status == 0xFF)
     ;
@@ -31,21 +31,18 @@ void setup() {         //Initializes the serial moniter/sets up the serial monit
       ;
   }
 
-
-  //sd card - openlog ehg 10
-
   SDcard.append(FILENAME);
   SDcard.println("Pressure, Temperature");
   SDcard.syncFile();
 }
 
-void loop() {    //the void loop is being used to loop (repeat) the code in the loop ({}) with the serial monitor printing out the pressure and temperature values. The loop is bing used to repeatedly remeausre the values.
-  launch(true);  // t=debug f=launch
-  delay(4000);   //every 40 milliseconds the task repeats itself, giving us new values.
+void loop() {     //the void loop is being used to loop (repeat) the code in the loop ({}) with the serial monitor printing out the pressure and temperature values. The loop is bing used to repeatedly remeausre the values.
+  launch(false);  // t=debug f=launch
+  delay(4000);    //every 40 milliseconds the task repeats itself, giving us new values.
 }
 
 void launch(bool debug) {
-  if (debug) {
+  if (debug == true) {
 
     Serial.print("Current Pressure is: ");         //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
     Serial.println(sensor.getPressure_hPa());      //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
