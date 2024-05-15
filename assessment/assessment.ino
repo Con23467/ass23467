@@ -21,12 +21,15 @@ void setup() {         //Initializes the serial moniter/sets up the serial monit
     while (1)
       ;
   }
-
+  
   byte status = SDcard.getStatus();
-
-  Serial.print("SDcard status: ");
-  if (status == 1) Serial.print("Responsive");
-
+  if (status == 0xFF)
+    ;
+  {
+    Serial.println("SDcard failed to respond.");
+    while (1)
+      ;
+  }
 
 
   //sd card - openlog ehg 10
@@ -36,16 +39,17 @@ void setup() {         //Initializes the serial moniter/sets up the serial monit
   SDcard.syncFile();
 }
 
-void loop() {     //the void loop is being used to loop (repeat) the code in the loop ({}) with the serial monitor printing out the pressure and temperature values. The loop is bing used to repeatedly remeausre the values.
-  launch(false);  // t=debug f=launch
-  delay(4000);    //every 40 milliseconds the task repeats itself, giving us new values.
+void loop() {    //the void loop is being used to loop (repeat) the code in the loop ({}) with the serial monitor printing out the pressure and temperature values. The loop is bing used to repeatedly remeausre the values.
+  launch(true);  // t=debug f=launch
+  delay(4000);   //every 40 milliseconds the task repeats itself, giving us new values.
 }
 
 void launch(bool debug) {
   if (debug) {
-    Serial.print("Current pressure: ");            //This is saying that the serial monitor needs to be outputting, "Current pressure is: " with the temperature being added in after the :, as it needs to be fetched from the next line
-    Serial.print(sensor.getPressure_hPa());        // //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
-    Serial.print(", Current Tmeperature (°C): ");  //This is saying that the serial monitor needs to be outputting, "Current Temperature is (x)" with x being added in the next line as the temperature needs to be fetched from the sensor
+
+    Serial.print("Current Pressure is: ");         //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
+    Serial.println(sensor.getPressure_hPa());      //The serial print is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
+    Serial.print("Current Temperature (°C)");      //The serial print is showing us the temperature values on the serial monitor, showing us what is being inputted
     Serial.println(sensor.getTemperature_degC());  //The serial print is showing us the temperature values on the serial monitor, showing us what is being inputted
 
   } else {
@@ -53,13 +57,11 @@ void launch(bool debug) {
     //the SDcard print and println is writing out the values for the pressure and the temperature then saving it to the SD card. The same things are happening in the next for lines as in the top four lines of code
     // SDcard.print("Current pressure: ");
     SDcard.print(sensor.getPressure_hPa());
-    SDcard.print(", ");
+    SDcard.print(",");
     SDcard.println(sensor.getTemperature_degC());  // the SDcard is saving the values to the SD card
 
     SDcard.syncFile();
   }
 }
-
-//
 
 // got the two codes
