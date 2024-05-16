@@ -3,8 +3,6 @@
 #include <Wire.h>
 #include <SparkFun_Qwiic_OpenLog_Arduino_Library.h>
 
-//for the delay to adjust all at same tukme
-
 LPS25HB sensor;                            //The LPS25HB is a pressure sensor wich functions as a digital output barometer
 OpenLog SDcard;                            //Create instance/labeling the Log as SDcard
 const String FILENAME = "rocketdata.txt";  //the FILENAME is being called/saved as rocketdata.txt
@@ -18,30 +16,35 @@ void setup() {         //Initializes the serial moniter/sets up the serial monit
 
   if (sensor.isConnected() == false) {           //we are setting up the if statement, so if something happens then the task in the {} will happen
     Serial.println("Sensor hasn't been read.");  //Serial printing that the sensor has not been read yet allowing me to figure out a. if the code was working up to this point and b. seeing if the code hasn't been read yet so that I know if the connection isn't correct or if there is a fault somewhere in the sensor
-    while (1)
+    while (1)                                    //code pauses/freezes for a second
       ;
   }
 
-  byte status = SDcard.getStatus();
-  if (status == 0xFF)
-  {
-    Serial.println("SDcard failed to respond.");
-    while (1) //(pause)
+  byte status = SDcard.getStatus();               //
+  if (status == 0xFF) {                           //if the status
+    Serial.println("SDcard failed to respond.");  //Serial monitor is outputting "SDcard failed to respond." allowing me to know whether the SDcard is responsive and working or not, if it skips this messaqge It likely is working as shown by the following messages
+    while (1)                                     //(pause)
       ;
   }
 
-  SDcard.append(FILENAME);
-  SDcard.println("Pressure, Temperature");
+  if (status & 1 << STATUS_SD_INIT_GOOD) {
+    Serial.println("SDcard is responsive");  //Serial moitor is telling me that the SDcard is being recognized/read and working
+  } else {
+    Serial.println("Is the SDcard present?");
+  }
+  SDcard.append(FILENAME);                  //the FILENAME (rocketdata.txt) is what the SDcards file will be saved as
+  SDcard.println("Pressure, Temperature");  //The headings, Pressure and Temperature will be at the top of the file and then the values will be outputted below them
   SDcard.syncFile();
+  Serial.println("setup done");  //This was done for testing purposes to ensure that this piece of code was being acted on and working
 }
 
-void loop() {     //the void loop is being used to loop (repeat) the code in the loop ({}) with the serial monitor printing out the pressure and temperature values. The loop is bing used to repeatedly remeausre the values.
-  launch(false);  // t=debug f=launch
-  delay(4000);    //every 40 milliseconds the task repeats itself, giving us new values.
+void loop() {    //the void loop is being used to loop (repeat) the code in the loop ({}) with the serial monitor printing out the pressure and temperature values. The loop is bing used to repeatedly remeausre the values.
+  launch(true);  // t=debug f=launch //add this to testyin ther true and false
+  delay(4000);   //every 4 seconds the task repeats itself, giving us new values. This can be changed when the final time incroments are deceided.
 }
 
-void launch(bool debug) { //This is setting up my method for the launch sequence
-  if (debug == true) { //we are saying that when our debug is true our serial monitor will output the text that is hardcoded and then the temperature and pressure which is dependent on everything outside the rockets control 
+void launch(bool debug) {  //This is setting up my method for the launch sequence
+  if (debug == true) {     //we are saying that when our debug is true our serial monitor will output the text that is hardcoded and then the temperature and pressure which is dependent on everything outside the rockets control
 
     Serial.print("Current Pressure is: ");         //The serial print is printing out "Current Pressure is:" and then the following line will be outputting the current pressure
     Serial.println(sensor.getPressure_hPa());      //The serial println is is showing us the pressure values on the serial monitor, showing us what is being inputted to the sensor
@@ -56,6 +59,6 @@ void launch(bool debug) { //This is setting up my method for the launch sequence
     SDcard.print(",");
     SDcard.println(sensor.getTemperature_degC());  // the SDcard is saving the values to the SD card
 
-    SDcard.syncFile();
+    SDcard.syncFile();  //syncing the information to the file "rocketdata.txt" sothat it is accessable and findable when I plug the SDcard into my laptop
   }
 }
