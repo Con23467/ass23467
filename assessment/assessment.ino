@@ -22,17 +22,17 @@ void setup() {         //Initializes the serial moniter/sets up the serial monit
       ;
   }
 
-  byte status = SDcard.getStatus();               //
-  if (status == 0xFF) {                           //if the status
+  byte status = SDcard.getStatus();               //get the status from SDcard and give it to the varible status
+  if (status == 0xFF) {                           //if the status meets a ceratin criteria then (Continue next line)
     Serial.println("SDcard failed to respond.");  //Serial monitor is outputting "SDcard failed to respond." allowing me to know whether the SDcard is responsive and working or not, if it skips this messaqge It likely is working as shown by the following messages
     while (1)                                     //(pause)
       ;
   }
 
-  if (status & 1 << STATUS_SD_INIT_GOOD) {
+  if (status & 1 << STATUS_SD_INIT_GOOD) {   //If the Status meets this criteria then (Proceed with next 3 lines of code)
     Serial.println("SDcard is responsive");  //Serial moitor is telling me that the SDcard is being recognized/read and working
   } else {
-    Serial.println("Is the SDcard present?");
+    Serial.println("Is the SDcard present?");  //Serial monitor outputs "Is the SDcard present?"
   }
 
   SDcard.append(FILENAME);                  //the FILENAME (rocketdata.txt) is what the SDcards file will be saved as
