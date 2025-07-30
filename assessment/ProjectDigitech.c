@@ -108,6 +108,7 @@ void loop()
             }
             //when  you click either of these links you add a H or L into the
             //and that gets read by if statements below
+            //below create the hyper links
             client.print("Click <a href=\"/H\">here</a> turn the LED on<br>");
             client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
 
@@ -115,11 +116,29 @@ void loop()
             break; //leave the while loop
             }
             else
+            {// if you got a first newline, then clear currentLine variable }
+              currentLine = "";
           }
         }
-      }
-    }
-  }
+        else if (c != '\r')
+        {
+          currentLine += c; //add to the end of the current line
+        }
+        if currentLine.endWith(("GET /H"))
+        {
+          digitalWrite(LEDPIN, HIGH); // GET /H turns the LED on
+        }
+        if (currentLine.endWith("GET /L"))
+        {
+          digitalWrite(LEDPIN, LOW); // GET /L turns the LED off
+        }
+      } //end of the client.avaliable
+    }//end of while loop
+    //close the connection at the ESP32 end as 
+    //the client is not connected (see while loop above)
+    client.stop();
+    Serial.println("client disconnected");
+  }//end of if client
 }
 
 [env:adafruit_feather_esp32s3_reversetft]
