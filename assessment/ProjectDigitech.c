@@ -67,9 +67,9 @@ void loop()
     String currentLine = "";
 
     //while they are connected
-    while (client.connected())
+    while (client.connected()) //check if server is avaliable/client has connected
     {
-      if (client.avaliable())
+      if (client.avaliable())//while connected
       {
         //another variable to hold any incoming
         char c = client.read();
@@ -89,7 +89,15 @@ void loop()
             client.println("Connection: close");
             client.println("Refresh: 5"); //refresh
             client.println();
+            client,println("<!DOCTYPE HTML>");
+            client.println("<html>");
+            client.println("<style>html{font-family: Arial}")
 
+            client.println("<h1>Sensor stuff</h1>");
+            //output the value of an analog input pin
+            int sensorReading = analogRead(SENSORPIN);
+            client.print("RAW Sensor value is "); //use
+            client.print(sensorReading);
           }
         }
       }
