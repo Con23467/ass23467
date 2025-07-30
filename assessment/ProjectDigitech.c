@@ -98,6 +98,23 @@ void loop()
             int sensorReading = analogRead(SENSORPIN);
             client.print("RAW Sensor value is "); //use
             client.print(sensorReading);
+
+            //output different text depending on the LED value
+            byte LEDReading = digitalRead(LEDPIN);
+            if(LEDReading == HIGH){
+              client.print("Red LED is on<br><br>");
+            }else{
+              client.print("Red LED is off<br><br>");
+            }
+            //when  you click either of these links you add a H or L into the
+            //and that gets read by if statements below
+            client.print("Click <a href=\"/H\">here</a> turn the LED on<br>");
+            client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
+
+            client.println("</html>");
+            break; //leave the while loop
+            }
+            else
           }
         }
       }
