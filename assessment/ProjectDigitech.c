@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <SPI.h>
-#include "arduino_secrets.h"
-#include <ESPAsyncWebServer.h>
+//#include "arduino_secrets.h"
+//#include <ESPAsyncWebServer.h>
 #define SECRET_SSID "T8-Arduino"
 #define SECRET_PASS "T8-Arduino"
 
@@ -42,7 +42,7 @@ void setup()
 {
 
   pinMode(LEDPIN, OUTPUT);
-  pinMode(SENSORPIN, INPUT);
+  pinMode(SENSORPIN, INPUT); //can have room and meat temps
 
   Serial.begin(115200);
   delay(5000); 
@@ -89,10 +89,10 @@ void loop()
             client.println("Connection: close");
             client.println("Refresh: 5"); //refresh
             client.println();
+            //website displays from here
             client,println("<!DOCTYPE HTML>");
-            client.println("<html>");
-            client.println("<style>html{font-family: Arial}")
-
+            client.println("<html>"); //from this to next /html its the webpage
+            client.println("<style>html{font-family: Arial; background-color: lightblue;}");//only cplour if theres a 
             client.println("<h1>Sensor stuff</h1>");
             //output the value of an analog input pin
             int sensorReading = analogRead(SENSORPIN);
@@ -102,17 +102,18 @@ void loop()
             //output different text depending on the LED value
             byte LEDReading = digitalRead(LEDPIN);
             if(LEDReading == HIGH){
-              client.print("Red LED is on<br><br>");
+              client.print("Red LED is on<br><br>"); //br is the line break
             }else{
               client.print("Red LED is off<br><br>");
             }
             //when  you click either of these links you add a H or L into the
             //and that gets read by if statements below
             //below create the hyper links
-            client.print("Click <a href=\"/H\">here</a> turn the LED on<br>");
+            client.print("Click <a href=\"/H\">here</a> turn the LED on<br>"); //the slash h creates the hyperlink, make descrioptive
             client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
 
             client.println("</html>");
+            //end of displayed webpage
             break; //leave the while loop
             }
             else
@@ -141,34 +142,3 @@ void loop()
   }//end of if client
 }
 
-[env:adafruit_feather_esp32s3_reversetft]
-platform = espressif32
-board = adafruit_feather_esp32s3_reversetft
-framework = arduino
-build_flags = 
--DARDUINO_USB_MODE=1
--DARDUINO_USB_CDC_ON_BOOT=1
-mointor_speed = 115200
-lib_compact_mode = strict 
-lib_ldf_mode = chain+
-
-
-
-
-\XSHAL_STRICT_CACHEATTR_BYPASSlib_ldf_mode = chain+
-
-int myFunction(int, int);
-
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
