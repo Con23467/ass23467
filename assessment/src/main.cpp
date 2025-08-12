@@ -92,6 +92,7 @@ void loop()
             client.println("<!DOCTYPE HTML>");
             client.println("<html>"); //from this to next /html its the webpage
             client.println("<style>html{font-family: Arial; background-color: lightblue;}");//only cplour if theres a 
+            client.println("</style>");
             client.println("<h1>Sensor stuff</h1>");
             //output the value of an analog input pin
             int sensorReading = analogRead(SENSORPIN);
