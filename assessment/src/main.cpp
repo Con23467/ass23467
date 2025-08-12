@@ -1,10 +1,8 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <SPI.h>
-//#include "arduino_secrets.h"
+#include "arduino_secrets.h"
 //#include <ESPAsyncWebServer.h>
-#define SECRET_SSID "T8-Arduino" //home wifi
-#define SECRET_PASS "T8-Arduino" //home password
 
 
 
