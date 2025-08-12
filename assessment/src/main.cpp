@@ -11,18 +11,18 @@
 const char SSID[] = SECRET_SSID; //change
 const char PASSWORD[] = SECRET_PASS;
 
-WifiServer server(80);
+WiFiServer server(80);
 
 const byte LEDPIN = 13;
 const byte SENSORPIN = A5;
 
-*WiFi stuff
+//*WiFi stuff
 
 void initWiFi()
 {
   delay(5000);
-    WiFi.mode(WIFI_STA)
-    Wifi.begin(SSID, PASSWORD);
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(SSID, PASSWORD);
     Serial.print('Connecting to WiFi ..');
     while (WiFi.status() != WL_CONNECTED)
     {
@@ -32,7 +32,7 @@ void initWiFi()
 Serial.print("Connected to ");
 Serial.println(SSID);
 
-Serial,print("Use http://");
+Serial.print("Use http://");
 Serial.println(WiFi.localIP());
 }
 
@@ -48,7 +48,7 @@ void setup()
   Serial.begin(115200);
   delay(5000); 
 
-  initWWiFi();
+  initWiFi();
 
   server.begin();
 }
@@ -60,7 +60,7 @@ void loop()
 {
 
   //check if anyone connects to the ESP32
-  WiFiClient client = server.avaliable();
+  WiFiClient client = server.available();
   if (client)
   {
     Serial.println("new client");
@@ -70,7 +70,7 @@ void loop()
     //while they are connected
     while (client.connected()) //check if server is avaliable/client has connected
     {
-      if (client.avaliable())//while connected
+      if (client.available())//while connected
       {
         //another variable to hold any incoming
         char c = client.read();
@@ -91,7 +91,7 @@ void loop()
             client.println("Refresh: 5"); //refresh
             client.println();
             //website displays from here
-            client,println("<!DOCTYPE HTML>");
+            client.println("<!DOCTYPE HTML>");
             client.println("<html>"); //from this to next /html its the webpage
             client.println("<style>html{font-family: Arial; background-color: lightblue;}");//only cplour if theres a 
             client.println("<h1>Sensor stuff</h1>");
@@ -126,11 +126,11 @@ void loop()
         {
           currentLine += c; //add to the end of the current line
         }
-        if currentLine.endWith(("GET /H"))
+        if(currentLine.endsWith("GET /H"))
         {
           digitalWrite(LEDPIN, HIGH); // GET /H turns the LED on
         }
-        if (currentLine.endWith("GET /L"))
+        if (currentLine.endsWith("GET /L"))
         {
           digitalWrite(LEDPIN, LOW); // GET /L turns the LED off
         }
