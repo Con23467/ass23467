@@ -3,12 +3,12 @@
 #include <SPI.h>
 //#include "arduino_secrets.h"
 //#include <ESPAsyncWebServer.h>
-#define SECRET_SSID "T8-Arduino"
-#define SECRET_PASS "T8-Arduino"
+#define SECRET_SSID "T8-Arduino" //home wifi
+#define SECRET_PASS "T8-Arduino" //home password
 
 
 
-const char SSID[] = SECRET_SSID;
+const char SSID[] = SECRET_SSID; //change
 const char PASSWORD[] = SECRET_PASS;
 
 WifiServer server(80);
@@ -20,6 +20,7 @@ const byte SENSORPIN = A5;
 
 void initWiFi()
 {
+  delay(5000);
     WiFi.mode(WIFI_STA)
     Wifi.begin(SSID, PASSWORD);
     Serial.print('Connecting to WiFi ..');

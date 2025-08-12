@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../../../PlatformIO/Projects/testServo"
+		},
+		{
+			"name": "WebExample",
+			"path": "../../../PlatformIO/Projects/WebExample"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "WebExample",
+		"files.associations": {
+			"arduino.h": "c"
+		}
+	}
+}
