@@ -91,12 +91,66 @@ Serial.println(WiFi.localIP());
             client.println("Connection: close");
             client.println("Refresh: 5"); //refresh
             client.println();
-            //website displays from here
-            client.println("<!DOCTYPE HTML>");
+
+             //HAN REORDERED ----------------------------------
+        if(currentLine.endsWith("GET /H"))
+        {
+          digitalWrite(MEATPIN, HIGH); // GET /H turns the LED on
+        }
+        if (currentLine.endsWith("GET /L"))
+        {
+          digitalWrite(MEATPIN, LOW); // GET /L turns the LED off
+        }
+         if (currentLine.endsWith("GET /set"))
+       //Settings page under here
+         {
+           //HAN ADDED ----------------------------------
+        pasteSettingspage();
+        }
+        //Settings page ends here
+
+//HAN ADDED ----------------------------------
+          if (currentLine.endsWith("GET /main"))  
+ pasteHomepage();
+           
+          }
+//HAN - not sure how to get it to default to main on first visit, maybe this
+          //or maybe just an if statement around line 94 with a boolean set to true for first time
+          //then false after that time by toggling it to false
+currentLine += "/main\"; //add main to the end of the current line
+            
+            break; //leave the while loop
+            }
+            else
+            {// if you got a first newline, then clear currentLine variable 
+              currentLine = "";
+          }
+        }
+        else if (c != '\r')
+        {
+          currentLine += c; //add c to the end of the current line
+        }
+        
+
+
+
+
+      } //end of the client.avaliable
+    }//end of while loop
+    //close the connection at the ESP32 end as 
+    //the client is not connected (see while loop above)
+    client.stop();
+    Serial.println("client disconnected");
+  }//end of if client
+}
+
+//HAN ADDED ----------------------------------
+void pasteHomepage(){
+ client.println("<!DOCTYPE HTML>");
             client.println("<html>"); //from this to next /html its the webpage
             client.println("<style>html{font-family: Arial; background-color: white;}table, th, td{border: 1px solid; boareder-collapse: collapse;}");//only cplour if theres a 
             client.println("</style>");
-            client.println("<h1>The Meat Stick<h1>"); //Heading
+            client.println("<h1>The Meat Stick</h1>"); //Heading
             client.print(" <a href=\"/set\">Settings</a><br>"); //the slash h creates the hyperlink, make descrioptive
             //client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
             client.println("<h1>The Temperature </h1>");
@@ -147,6 +201,8 @@ Serial.println(WiFi.localIP());
            client.println("</tr>");
            client.println("<tr>");
            client.println("</table>"); 
+           client.println("</html>");  //end of displayed webpage
+           
           
       
             //output different text depending on the LED value
@@ -164,8 +220,8 @@ Serial.println(WiFi.localIP());
             //client.print("Click <a href=\"/H\">Settings</a> turn the LED on<br>"); //the slash h creates the hyperlink, make descrioptive
             //client.print("Click <a href=\"/L\">here</a> turn the LED off<br>"); 
 
-            client.println("</html>");
-            //end of displayed webpage
+<<<<<<< HEAD
+            
             break; //leave the while loop
             }
             else
@@ -189,12 +245,22 @@ Serial.println(WiFi.localIP());
        //Settings page under here
          {
          client.println("<!DOCTYPE HTML>");
+=======
+            client.println("</html>");
+}
+
+//HAN ADDED ----------------------------------
+void pasteSettingspage(){
+client.println("<!DOCTYPE HTML>");
+>>>>>>> 5765c4d970d2d66bd74888d9c95318477c736b19
             client.println("<html>"); //from this to next /html its the webpage
             client.println("<style>html{font-family: Arial; background-color: lightblue;}");//only cplour if theres a 
             client.println("</style>");
             client.println("<h1>Settings page</h1>"); //Heading
             client.print(" <a href=\"/main\">Homepage</a><br>"); //the slash h creates the hyperlink, make descrioptive
             client.println("<h1>Set Temperature</h1>");
+<<<<<<< HEAD
+            client.println("</html>");  //end of displayed webpage
         }
         //Settings page ends here
 
@@ -207,5 +273,6 @@ Serial.println(WiFi.localIP());
     client.stop();
     Serial.println("client disconnected");
   }//end of if client
+=======
+>>>>>>> 5765c4d970d2d66bd74888d9c95318477c736b19
 }
-
