@@ -33,6 +33,44 @@ void initWiFi()
   Serial.println(WiFi.localIP());
 }
 
+// HAN ADDED ----------------------------------
+void pasteHomepage(WiFiClient client)
+{
+  client.println("<!DOCTYPE HTML>");
+  client.println("<html>");                                                                                                                  // from this to next /html its the webpage
+  client.println("<style>html{font-family: Arial; background-color: white;}table, th, td{border: 1px solid; boareder-collapse: collapse;}"); // only cplour if theres a
+  client.println("</style>");
+  client.println("<h1>The Meat Stick<h1>"); // Heading
+  // output different text depending on the LED value
+  // byte MEATReading = digitalRead(MEATPIN);
+  // if(MEATReading == HIGH){
+  //  client.print("Red LED is on<br><br>"); //br is the line break
+  // }else{
+  // client.print("Red LED is off<br><br>");
+  // }
+  // when  you click either of these links you add a H or L into the
+  // and that gets read by if statements below
+  // below create the hyper links
+
+  // below is example
+  // client.print("Click <a href=\"/H\">Settings</a> turn the LED on<br>"); //the slash h creates the hyperlink, make descrioptive
+  // client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
+
+  client.println("</html>");
+}
+
+// HAN ADDED ----------------------------------
+void pasteSettingspage(WiFiClient client)
+{
+  client.println("<!DOCTYPE HTML>");
+  client.println("<html>");                                                        // from this to next /html its the webpage
+  client.println("<style>html{font-family: Arial; background-color: lightblue;}"); // only cplour if theres a
+  client.println("</style>");
+  client.println("<h1>Settings page</h1>");            // Heading
+  client.print(" <a href=\"/main\">Homepage</a><br>"); // the slash h creates the hyperlink, make descrioptive
+  client.println("<h1>Set Temperature</h1>");
+}
+
 /************
  * Setup stuff
  ************/
@@ -103,32 +141,32 @@ void loop()
             // Settings page under here
             {
               // HAN ADDED ----------------------------------
-              pasteSettingspage();
+              pasteSettingspage(client);
             }
             // Settings page ends here
 
             // HAN ADDED ----------------------------------
             if (currentLine.endsWith("GET /main"))
             {
-              pasteHomepage();
+              pasteHomepage(client);
+
+              // HAN - not sure how to get it to default to main on first visit, maybe this
+              // or maybe just an if statement around line 94 with a boolean set to true for first time
+              // then false after that time by toggling it to false
+              // currentLine += "/main\"; //add main to the end of the current line
+
+              //   break; //leave the while loop
             }
-            // HAN - not sure how to get it to default to main on first visit, maybe this
-            // or maybe just an if statement around line 94 with a boolean set to true for first time
-            // then false after that time by toggling it to false
-            currentLine += "/main\"; //add main to the end of the current line
-
-                break; // leave the while loop
+            else
+            { // if you got a first newline, then clear currentLine variable
+              currentLine = "";
+            }
           }
-          else
-          { // if you got a first newline, then clear currentLine variable
-            currentLine = "";
+          else if (c != '\r')
+          {
+            currentLine += c; // add c to the end of the current line
           }
         }
-        else if (c != '\r')
-        {
-          currentLine += c; // add c to the end of the current line
-        }
-
       } // end of the client.avaliable
     } // end of while loop
     // close the connection at the ESP32 end as
@@ -137,117 +175,3 @@ void loop()
     Serial.println("client disconnected");
   } // end of if client
 }
-
-// HAN ADDED ----------------------------------
-void pasteHomepage()
-{
-  client.println("<!DOCTYPE HTML>");
-  client.println("<html>");                                                                                                                  // from this to next /html its the webpage
-  client.println("<style>html{font-family: Arial; background-color: white;}table, th, td{border: 1px solid; boareder-collapse: collapse;}"); // only cplour if theres a
-  client.println("</style>");
-  client.println("<h1>The Meat Stick</h1>");          // Heading
-  client.print(" <a href=\"/set\">Settings</a><br>"); // the slash h creates the hyperlink, make descrioptive
-  // client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
-  client.println("<h1>The Temperature </h1>");
-  client.println("<h1>Connor's Meat Guide</h1>");
-
-  int sensorReading = analogRead(SENSORPIN);
-  // client.print("Temperature is: <tr> "); //use output the value of an analog input pin
-  client.print(sensorReading);
-
-  // client.println("<h1>Connor's Meat Guide<h1>");
-
-  client.println("<table>");
-  client.println("<tr>");
-  client.println("<th>Steak Type</th>");
-  client.println("<th>Colour</th>");
-  client.println("<th>Temperature (Degrees C)</th>");
-  client.println("</tr>");
-  client.println("<tr>");
-  client.println("<td>Rare</td>");
-  client.println("<td>Blood Red</td>");
-  client.println("<td>50</td>");
-  client.println("</tr>");
-  client.println("<tr>");
-
-  client.println("<td>Medium Rare</td>");
-  client.println("<td>Pink</td>");
-  client.println("<td>54-57</td>");
-  client.println("</tr>");
-  client.println("<tr>");
-
-  client.println("<td>Medium</td>");
-  client.println("<td>Pinky Brown</td>");
-  client.println("<td>58-62</td>");
-  client.println("</tr>");
-  client.println("<tr>");
-
-  client.println("<td>Medium Well</td>");
-  client.println("<td>Light Brown</td>");
-  client.println("<td>63-68</td>");
-  client.println("</tr>");
-  client.println("tr>");
-
-  client.println("<td>Well</td>");
-  client.println("<td>Brown</td>");
-  client.println("<td>69</td>");
-  client.println("</tr>");
-  client.println("<tr>");
-  client.println("</table>");
-  client.println("</html>"); // end of displayed webpage
-
-  // output different text depending on the LED value
-  // byte MEATReading = digitalRead(MEATPIN);
-  // if(MEATReading == HIGH){
-  //  client.print("Red LED is on<br><br>"); //br is the line break
-  // }else{
-  // client.print("Red LED is off<br><br>");
-  // }
-  // when  you click either of these links you add a H or L into the
-  // and that gets read by if statements below
-  // below create the hyper links
-
-  // below is example
-  // client.print("Click <a href=\"/H\">Settings</a> turn the LED on<br>"); //the slash h creates the hyperlink, make descrioptive
-  // client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
-
-  /*
-    break; //leave the while loop
-    }
-    else
-    {// if you got a first newline, then clear currentLine variable }
-      currentLine = "";
-  }
-}
-else if (c != '\r')
-{
-  currentLine += c; //add to the end of the current line
-}
-if(currentLine.endsWith("GET /H"))
-{
-  digitalWrite(MEATPIN, HIGH); // GET /H turns the LED on
-}
-if (currentLine.endsWith("GET /L"))
-{
-  digitalWrite(MEATPIN, LOW); // GET /L turns the LED off
-}
- if (currentLine.endsWith("GET /set"))
-//Settings page under here
- {
- client.println("<!DOCTYPE HTML>");
-*/
-}
-
-// HAN ADDED ----------------------------------
-void pasteSettingspage()
-{
-  client.println("<!DOCTYPE HTML>");
-  client.println("<html>");                                                        // from this to next /html its the webpage
-  client.println("<style>html{font-family: Arial; background-color: lightblue;}"); // only cplour if theres a
-  client.println("</style>");
-  client.println("<h1>Settings page</h1>");            // Heading
-  client.print(" <a href=\"/main\">Homepage</a><br>"); // the slash h creates the hyperlink, make descrioptive
-  client.println("<h1>Set Temperature</h1>");
-  client.println("</html>"); // end of displayed webpage
-}
-// Settings page ends here
