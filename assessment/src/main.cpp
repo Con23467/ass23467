@@ -96,65 +96,65 @@ Serial.println(WiFi.localIP());
 //------------------------------------------------------------------------------
 
 
-          //   //website displays from here
-          //   client.println("<!DOCTYPE HTML>");
-          //   client.println("<html>"); //from this to next /html its the webpage
-          //   client.println("<style>html{font-family: Arial; background-color: white;}");//only cplour if theres a 
-          //   client.println("<style>html{font-family: Arial; background-color: white;}table, th, td{border: 1px solid; boareder-collapse: collapse;}");//only cplour if theres a 
-          //   client.println("</style>");
-          //   client.println("<h1>The Meat Stick<h1>"); //Heading
+             //website displays from here
+             client.println("<!DOCTYPE HTML>");
+             client.println("<html>"); //from this to next /html its the webpage
+             client.println("<style>html{font-family: Arial; background-color: white;}");//only cplour if theres a 
+             client.println("<style>html{font-family: Arial; background-color: white;}table, th, td{border: 1px solid; boareder-collapse: collapse;}");//only cplour if theres a 
+             client.println("</style>");
+             client.println("<h1>The Meat Stick<h1>"); //Heading
           //   client.print(" <a href=\"/set\">Settings</a><br>"); //the slash h creates the hyperlink, make descrioptive
-          //   client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
-          //   //client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
-          //   client.println("<h1>The Temperature </h1>");
-          //   client.println("<h1>Connor's Meat Guide</h1>");
+            // client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
+             //client.print("Click <a href=\"/L\">here</a> turn the LED off<br>");
+             client.println("<h2>The Temperature </h2>"); //h2 to make the headingh smaller
+            client.println("<h1>Connor's Meat Guide</h1>");
 
 
-          //   int sensorReading = analogRead(SENSORPIN);
-          //   //client.print("Temperature is: <tr> "); //use output the value of an analog input pin
-          //   client.print(sensorReading);
+             int sensorReading = analogRead(SENSORPIN);
+            //client.print("Temperature is: <tr> "); //use output the value of an analog input pin
+             client.print(sensorReading);
             
           
           //  //client.println("<h1>Connor's Meat Guide<h1>");
 
 
-          //  client.println("<table>");
-          //  client.println("<tr>");
-          //  client.println("<th>Steak Type</th>");
-          //  client.println("<th>Colour</th>");   
-          //  client.println("<th>Temperature (Degrees C)</th>"); 
-          //  client.println("</tr>"); 
-          //  client.println("<tr>"); 
-          //  client.println("<td>Rare</td>"); 
-          //  client.println("<td>Blood Red</td>");
-          //  client.println("<td>50</td>");
-          //  client.println("</tr>");
-          //  client.println("<tr>");
+            client.println("<table>");
+            client.println("<tr>");
+            client.println("<th>Steak Type</th>");
+            client.println("<th>Colour</th>");   
+            client.println("<th>Temperature (Degrees C)</th>"); 
+            client.println("</tr>"); 
+            client.println("<tr>"); 
+            client.println("<td>Rare</td>"); 
+            client.println("<td>Blood Red</td>");
+            client.println("<td>50</td>");
+            client.println("</tr>");
+            client.println("<tr>");
 
-          //  client.println("<td>Medium Rare</td>");
-          //  client.println("<td>Pink</td>");
-          //  client.println("<td>54-57</td>");
-          //  client.println("</tr>");
-          //  client.println("<tr>");
+            client.println("<td>Medium Rare</td>");
+            client.println("<td>Pink</td>");
+            client.println("<td>54-57</td>");
+            client.println("</tr>");
+            client.println("<tr>");
           
-          //  client.println("<td>Medium</td>");
-          //  client.println("<td>Pinky Brown</td>");
-          //  client.println("<td>58-62</td>");
-          //  client.println("</tr>");
-          //  client.println("<tr>");
+            client.println("<td>Medium</td>");
+            client.println("<td>Pinky Brown</td>");
+            client.println("<td>58-62</td>");
+            client.println("</tr>");
+            client.println("<tr>");
 
-          //  client.println("<td>Medium Well</td>");
-          //  client.println("<td>Light Brown</td>");
-          //  client.println("<td>63-68</td>");
-          //  client.println("</tr>"); 
-          //  client.println("tr>"); 
+            client.println("<td>Medium Well</td>");
+            client.println("<td>Light Brown</td>");
+            client.println("<td>63-68</td>");
+            client.println("</tr>"); 
+            client.println("tr>"); 
 
-          //  client.println("<td>Well</td>");
-          //  client.println("<td>Brown</td>");
-          //  client.println("<td>69</td>");
-          //  client.println("</tr>");
-          //  client.println("<tr>");
-          //  client.println("</table>"); 
+            client.println("<td>Well</td>");
+            client.println("<td>Brown</td>");
+            client.println("<td>69</td>");
+            client.println("</tr>");
+            client.println("<tr>");
+            client.println("</table>"); 
 
           //   //output different text depending on the LED value
           //   byte MEATReading = digitalRead(MEATPIN);
