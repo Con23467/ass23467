@@ -186,8 +186,11 @@ client.println("<body>");
 client.println("<h1>JavaScript HTML Events</h1>");
 client.println("<h2 id='settings'>Settings</h2>");
 
-client.println("<div id='temperature-section' style='display:none; border:1px solid black; padding:10px; width:200px; margin-top:10px;'>");
-client.println("<p>Temperature is 24°C</p>");
+client.println("<div id='temperature-section' style='display:none; border:1px solid black; padding:10px; width:250px; margin-top:10px;'>");
+client.println("<p>Current Temperature: <span id='current-temp'>24°C</span></p>");
+client.println("<label for='preset'>Set Preset Temperature:</label><br>");
+client.println("<input type='number' id='preset' min='0' max='100' placeholder='Enter °C'><br><br>");
+client.println("<button id='set-btn'>Set</button>");
 client.println("<button id='close-btn'>Close</button>");
 client.println("</div>");
 
@@ -196,15 +199,35 @@ client.println(R"rawliteral(
   const settings = document.getElementById('settings');
   const section = document.getElementById('temperature-section');
   const closeBtn = document.getElementById('close-btn');
+  const setBtn = document.getElementById('set-btn');
+  const presetInput = document.getElementById('preset');
+  const currentTemp = document.getElementById('current-temp');
 
+  // Show section when Settings clicked
   settings.onclick = function() {
-    section.style.display = 'block';   // show section
-    settings.innerHTML = 'Settings Page:';  // change text
+    section.style.display = 'block';
+    settings.innerHTML = 'Settings Page:';
   }
 
+  // Hide section when Close clicked
   closeBtn.onclick = function() {
-    section.style.display = 'none';   // hide section
-    settings.innerHTML = 'Settings';  // revert heading
+    section.style.display = 'none';
+    settings.innerHTML = 'Settings';
+  }
+
+  // Handle Set button
+  setBtn.onclick = function() {
+    const newTemp = parseInt(presetInput.value);
+    if (isNaN(newTemp)) {
+      alert('Please enter a valid temperature between 0 and 100°C.');
+      return;
+    }
+    if (newTemp < 0 || newTemp > 100) {
+      alert('Temperature must be between 0 and 100°C.');
+      return;
+    }
+    currentTemp.innerHTML = newTemp + '°C';
+    alert('Preset temperature set to ' + newTemp + '°C');
   }
 </script>
 )rawliteral");
