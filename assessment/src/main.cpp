@@ -90,7 +90,7 @@ Serial.println(WiFi.localIP());
             client.println("HTTP/1.1 200 OK");
             client.println("Content-Type: text/html");
             client.println("Connection: close");
-            client.println("Refresh: 5"); //refresh
+            client.println("Refresh: 30"); //refresh //include in testing 5 was too quick but lonegr like a minute is morte than necesery
             client.println();
 
 //------------------------------------------------------------------------------
@@ -126,31 +126,31 @@ Serial.println(WiFi.localIP());
             client.println("</tr>"); 
             client.println("<tr>"); 
             client.println("<td>Rare</td>"); 
-            client.println("<td>Blood Red</td>");
+            client.println("<td style='color:darkred;'>Blood Red</td>");
             client.println("<td>50</td>");
             client.println("</tr>");
             client.println("<tr>");
 
             client.println("<td>Medium Rare</td>");
-            client.println("<td>Pink</td>");
+            client.println("<td style='color:deeppink;'>Pink</td>");
             client.println("<td>54-57</td>");
             client.println("</tr>");
             client.println("<tr>");
           
             client.println("<td>Medium</td>");
-            client.println("<td>Pinky Brown</td>");
+            client.println("<td style='color:#C07050;'>Pinky Brown</td>");
             client.println("<td>58-62</td>");
             client.println("</tr>");
             client.println("<tr>");
 
             client.println("<td>Medium Well</td>");
-            client.println("<td>Light Brown</td>");
+            client.println("<td style='color:peru;'>Light Brown</td>");
             client.println("<td>63-68</td>");
             client.println("</tr>"); 
             client.println("tr>"); 
 
             client.println("<td>Well</td>");
-            client.println("<td>Brown</td>");
+            client.println("<td style='color:brown;'>Brown</td>");
             client.println("<td>69</td>");
             client.println("</tr>");
             client.println("<tr>");
@@ -180,14 +180,13 @@ Serial.println(WiFi.localIP());
           //   client.println("</html>");
           //   //end of displayed webpage
 
-client.println("<!DOCTYPE html>");
+          client.println("<!DOCTYPE html>");
 client.println("<html>");
 client.println("<body>");
-client.println("<h1>JavaScript HTML Events</h1>");
 client.println("<h2 id='settings'>Settings</h2>");
 
 client.println("<div id='temperature-section' style='display:none; border:1px solid black; padding:10px; width:250px; margin-top:10px;'>");
-client.println("<p>Current Temperature: <span id='current-temp'>24°C</span></p>");
+client.println("<p>Preset Temperature: <span id='current-temp'>--°C</span></p>");
 client.println("<label for='preset'>Set Preset Temperature:</label><br>");
 client.println("<input type='number' id='preset' min='0' max='100' placeholder='Enter °C'><br><br>");
 client.println("<button id='set-btn'>Set</button>");
@@ -203,19 +202,27 @@ client.println(R"rawliteral(
   const presetInput = document.getElementById('preset');
   const currentTemp = document.getElementById('current-temp');
 
-  // Show section when Settings clicked
+  // Load saved temperature (if exists)
+  const savedTemp = localStorage.getItem('presetTemp');
+  if (savedTemp !== null) {
+    currentTemp.innerHTML = savedTemp + '°C';
+  } else {
+    currentTemp.innerHTML = '24°C'; // default starting value
+  }
+
+  // Show the settings panel (manual close only)
   settings.onclick = function() {
     section.style.display = 'block';
     settings.innerHTML = 'Settings Page:';
   }
 
-  // Hide section when Close clicked
+  // Close button hides the section
   closeBtn.onclick = function() {
     section.style.display = 'none';
     settings.innerHTML = 'Settings';
   }
 
-  // Handle Set button
+  // When user sets a new preset
   setBtn.onclick = function() {
     const newTemp = parseInt(presetInput.value);
     if (isNaN(newTemp)) {
@@ -226,7 +233,10 @@ client.println(R"rawliteral(
       alert('Temperature must be between 0 and 100°C.');
       return;
     }
+
+    // Save and display the new temperature
     currentTemp.innerHTML = newTemp + '°C';
+    localStorage.setItem('presetTemp', newTemp);
     alert('Preset temperature set to ' + newTemp + '°C');
   }
 </script>
@@ -234,7 +244,6 @@ client.println(R"rawliteral(
 
 client.println("</body>");
 client.println("</html>");
-
 
 //------------------------------------------------------------------------------
 
