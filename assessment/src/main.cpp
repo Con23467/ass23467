@@ -5,33 +5,33 @@
 #include "arduino_secrets.h"
 // #include <ESPAsyncWebServer.h>
 
-const char SSID[] = SECRET_SSID; // change
+const char SSID[] = SECRET_SSID; //the secrets "tab" allows me to easily store different networks under comments sothat i can easily and qiuickly sub the different networks in depending on my location
 const char PASSWORD[] = SECRET_PASS;
 
 WiFiServer server(80);
 
-const byte MEATPIN = 13;
-const byte SENSORPIN = A5;
+const byte MEATPIN = 13;   //my meatpin (thermocouples)
+const byte SENSORPIN = A5; //pin connection
 
 //*WiFi stuff
 
-void initWiFi()
+void initWiFi() //setting up the wifi
 {
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(SSID, PASSWORD);
-  Serial.print('Connecting to WiFi ..');
+  Serial.print('Connecting to WiFi ..'); //displays in my serial monitor
   while (WiFi.status() != WL_CONNECTED)
   {
     Serial.print('.');
     delay(1000);
   }
   delay(5000);
-  Serial.print("Connected to ");
+  Serial.print("Connected to "); //if it connects displays this then moves to printing the SSID after this phrase further progressing to use http://
   Serial.println(SSID);
 
-  Serial.print("Use http://");
-  Serial.println(WiFi.localIP());
+  Serial.print("Use http://"); //when here it outputs the website ip (the http:// outputs first then the linebelow does the number sequence)
+  Serial.println(WiFi.localIP()); 
 }
 
 /************
@@ -88,26 +88,24 @@ void loop()
             client.println("HTTP/1.1 200 OK");
             client.println("Content-Type: text/html");
             client.println("Connection: close");
-            client.println("Refresh: 30"); // refresh //include in testing 5 was too quick but lonegr like a minute is morte than necesery
+            client.println("Refresh: 30"); // refresh and include in testing 5 was too quick but lonegr like a minute is morte than necesery
             client.println();
 
+            // website displays from here
             //------------------------------------------------------------------------------
 
-            // website displays from here
             client.println("<!DOCTYPE HTML>");
             client.println("<html>");                                                                                                                  // from this to next /html its the webpage
-            client.println("<style>html{font-family: Arial; background-color: white;}");                                                               // only cplour if theres a
+            client.println("<style>html{font-family: Arial; background-color: white;}");   //background colour is white and standard font will be Arial                                                       
             client.println("<style>html{font-family: Arial; background-color: white;}table, th, td{border: 1px solid; boareder-collapse: collapse;}"); // only cplour if theres a
             client.println("</style>");
-            client.println("<h1>The Meat Stick<h1>"); // Heading
+            client.println("<h1>The Meat Stick<h1>");    // Heading of the web page
             client.println("<h2>The Temperature </h2>"); // h2 to make the headingh smaller
-            client.println("<h2 style=\"font-family: 'Great Vibes', cursive; font-size: 36px; color: #513ccc; font-style: italic;\">Connor's Meat Guide</h2>");
+            client.println("<h2 style=\"font-family: 'Great Vibes', cursive; font-size: 36px; color: #513ccc; font-style: italic;\">Connor's Meat Guide</h2>"); //this line is giving the heading "Connors Meat Guide" its font, italics and colour (Royal Blue)
 
             int sensorReading = analogRead(SENSORPIN);
             // client.print("Temperature is: <tr> "); //use output the value of an analog input pin
             client.print(sensorReading);
-
-            //client.println("<h1>Connor's Meat Guide<h1>");
 
             client.println("<table>");
             client.println("<tr>");
@@ -145,11 +143,11 @@ void loop()
             client.println("<td>69</td>");
             client.println("</tr>");
             client.println("<tr>");
-            client.println("</table>"); //the ("</table>") closes the table/ ends the table. Any info added now won't be added into the table
-            
+            client.println("</table>"); // the ("</table>") closes the table/ ends the table. Any info added now won't be added into the table
+
             //   client.println("</html>");
             //   //end of displayed webpage
-            
+
             client.println("<!DOCTYPE html>");
             client.println("<html>");
             client.println("<body>");
