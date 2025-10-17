@@ -162,8 +162,8 @@ void loop()
             client.println("<p>Preset Temperature: <span id='current-temp'>--°C</span></p>"); //Allowing the temperature to be preset 
             client.println("<label for='preset'>Set Preset Temperature:</label><br>");
             client.println("<input type='number' id='preset' min='0' max='100' placeholder='Enter °C'><br><br>"); //making the max and min range for temperature settings from 0 - 11
-            client.println("<button id='set-btn'>Set</button>");
-            client.println("<button id='close-btn'>Close</button>");
+            client.println("<button id='set-btn'>Set</button>");//this is the set button command - once clicked the users preset te,perature will now be stored under the settings display
+            client.println("<button id='close-btn'>Close</button>");//this is the close button on the settings page, once clicked the settings page disappears
             client.println("</div>");
 
             client.println(R"rawliteral(
