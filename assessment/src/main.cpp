@@ -37,6 +37,7 @@ void initWiFi() //setting up the wifi
 /************
  * Setup stuff
  ************/
+//under this section its all the boring setup parts, the thermocoiuples being asigned as inputs and buzzer as output
 void setup()
 {
 
@@ -54,6 +55,7 @@ void setup()
 /************
  * loop stuff
  ************/
+//under this section we are looping the output of the serial monitor displaying the IP for the website and whenever there is a new client it pauses and states so under the serial monitor aswell
 void loop()
 {
 
@@ -93,7 +95,7 @@ void loop()
 
             // website displays from here
             //------------------------------------------------------------------------------
-
+//below is the start to the webpage stating that ist in html, and then further goes on to clasify fonts and background colours
             client.println("<!DOCTYPE HTML>");
             client.println("<html>");                                                                                                                  // from this to next /html its the webpage
             client.println("<style>html{font-family: Arial; background-color: white;}");   //background colour is white and standard font will be Arial                                                       
@@ -107,7 +109,8 @@ void loop()
             // client.print("Temperature is: <tr> "); //use output the value of an analog input pin
             client.print(sensorReading);
 
-            client.println("<table>");
+            //below is my table of meat types. Under each section it displays the Type of cook (under heading Steak Type), then under Colour - the different colours and lastly the ideal temperatures under Temperature (degrees C)
+            client.println("<table>"); //startys the table/opens the command for the table
             client.println("<tr>");
             client.println("<th>Steak Type</th>");
             client.println("<th>Colour</th>");
@@ -145,9 +148,8 @@ void loop()
             client.println("<tr>");
             client.println("</table>"); // the ("</table>") closes the table/ ends the table. Any info added now won't be added into the table
 
-            //   client.println("</html>");
-            //   //end of displayed webpage
-
+          
+            //this section is before my settings page - giving basic text after the table and then assigning the Settings phrase on the website to be the signal to continue with the settings page drop down once clicked
             client.println("<!DOCTYPE html>");
             client.println("<html>");
             client.println("<body>");
@@ -155,10 +157,11 @@ void loop()
             client.println("To change setting, click the Settings text drop down below:");
             client.println("<h2 id='settings'>Settings</h2>");
 
-            client.println("<div id='temperature-section' style='display:none; border:1px solid black; padding:10px; width:250px; margin-top:10px;'>");
-            client.println("<p>Preset Temperature: <span id='current-temp'>--°C</span></p>");
+            //this section holds all the information and background work shown (and not shown) for the settings page
+            client.println("<div id='temperature-section' style='display:none; border:1px solid black; padding:10px; width:250px; margin-top:10px;'>"); //creating the box around the settings page
+            client.println("<p>Preset Temperature: <span id='current-temp'>--°C</span></p>"); //Allowing the temperature to be preset 
             client.println("<label for='preset'>Set Preset Temperature:</label><br>");
-            client.println("<input type='number' id='preset' min='0' max='100' placeholder='Enter °C'><br><br>");
+            client.println("<input type='number' id='preset' min='0' max='100' placeholder='Enter °C'><br><br>"); //making the max and min range for temperature settings from 0 - 11
             client.println("<button id='set-btn'>Set</button>");
             client.println("<button id='close-btn'>Close</button>");
             client.println("</div>");
