@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 #include <WiFi.h>
 #include <SPI.h>
@@ -8,19 +7,23 @@
 const char SSID[] = SECRET_SSID; //the secrets "tab" allows me to easily store different networks under comments sothat i can easily and qiuickly sub the different networks in depending on my location
 const char PASSWORD[] = SECRET_PASS;
 
+//HAN Notes - What does this do?
 WiFiServer server(80);
 
 const byte MEATPIN = 13;   //my meatpin (thermocouples)
 const byte SENSORPIN = A5; //pin connection
 
-//*WiFi stuff
-
-void initWiFi() //setting up the wifi
+/************
+ * WiFi stuff
+ ************/
+void initWiFi()
 {
-
+//HAN Notes - What does this do?
   WiFi.mode(WIFI_STA);
   WiFi.begin(SSID, PASSWORD);
   Serial.print('Connecting to WiFi ..'); //displays in my serial monitor
+
+  //HAN Notes - What does this do?
   while (WiFi.status() != WL_CONNECTED)
   {
     Serial.print('.');
@@ -40,15 +43,17 @@ void initWiFi() //setting up the wifi
 //under this section its all the boring setup parts, the thermocoiuples being asigned as inputs and buzzer as output
 void setup()
 {
-
+  //HAN Notes - What does this do?
   pinMode(MEATPIN, OUTPUT);
   pinMode(SENSORPIN, INPUT); // can have room and meat temps
 
   Serial.begin(115200);
   delay(5000);
 
+  //HAN notes - What does this do?
   initWiFi();
-
+  
+  //HAN Notes - What does this do?
   server.begin();
 }
 
@@ -77,8 +82,6 @@ void loop()
         // another variable to hold any incoming
         char c = client.read();
         Serial.write(c);
-
-        /////////////////////////////
         // if browser sent a newline character
         if (c == '\n')
         {
@@ -93,8 +96,6 @@ void loop()
             client.println("Refresh: 30"); // refresh and include in testing 5 was too quick but lonegr like a minute is morte than necesery
             client.println();
 
-            // website displays from here
-            //------------------------------------------------------------------------------
 //below is the start to the webpage stating that ist in html, and then further goes on to clasify fonts and background colours
             client.println("<!DOCTYPE HTML>");
             client.println("<html>");                                                                                                                  // from this to next /html its the webpage
@@ -147,7 +148,6 @@ void loop()
             client.println("</tr>");
             client.println("<tr>");
             client.println("</table>"); // the ("</table>") closes the table/ ends the table. Any info added now won't be added into the table
-
           
             //this section is before my settings page - giving basic text after the table and then assigning the Settings phrase on the website to be the signal to continue with the settings page drop down once clicked
             client.println("<!DOCTYPE html>");
@@ -166,6 +166,7 @@ void loop()
             client.println("<button id='close-btn'>Close</button>");//this is the close button on the settings page, once clicked the settings page disappears
             client.println("</div>");
 
+  //HAN Notes - What does this do?
             client.println(R"rawliteral(
 <script>
   const settings = document.getElementById('settings');
@@ -217,8 +218,6 @@ void loop()
 
             client.println("</body>");
             client.println("</html>");
-
-            //------------------------------------------------------------------------------
 
             break; // leave the while loop
           }
