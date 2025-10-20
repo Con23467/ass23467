@@ -1,7 +1,9 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <SPI.h>
-#include "arduino_secrets.h"
+#include <arduino_secrets.h>
+#include <max6675.h>
+#include <Adafruit_ST7789.h>
 // #include <ESPAsyncWebServer.h>
 
 const char SSID[] = SECRET_SSID; //the secrets "tab" allows me to easily store different networks under comments sothat i can easily and qiuickly sub the different networks in depending on my location
@@ -12,6 +14,15 @@ WiFiServer server(80);
 
 const byte MEATPIN = 13;   //my meatpin (thermocouples)
 const byte SENSORPIN = A5; //pin connection
+
+
+int thermoDO = GPIO_NUM_37;
+int thermoCS = GPIO_NUM_35;
+int thermoCLK = 6;
+
+MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
+
+Adafruit_ST7789 screen = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST); //library //screen working 
 
 /************
  * WiFi stuff
@@ -43,13 +54,38 @@ void initWiFi()
 //under this section its all the boring setup parts, the thermocoiuples being asigned as inputs and buzzer as output
 void setup()
 {
+  
+  Serial.begin(115200);
+
+pinMode(TFT_BACKLITE, OUTPUT);
+  digitalWrite(TFT_BACKLITE, HIGH);
+
+  // turn on the screen / I2C power supply
+  pinMode(TFT_I2C_POWER, OUTPUT);
+  digitalWrite(TFT_I2C_POWER, HIGH);
+  delay(10);
+
+  // initialize screen
+  screen.init(135, 240); // Init ST7789 240x135
+  screen.setRotation(3);
+  screen.fillScreen(ST77XX_YELLOW); 
+
+  Serial.println(F("screen is on"));
+
+
+
+  Serial.println("MAX6675 test");
+  // wait for MAX chip to stabilize
+  delay(500);
+
+  /*
   //HAN Notes - What does this do?
   pinMode(MEATPIN, OUTPUT);
   pinMode(SENSORPIN, INPUT); // can have room and meat temps
 
   Serial.begin(115200);
   delay(5000);
-
+*/
   //HAN notes - What does this do?
   initWiFi();
   
@@ -63,6 +99,26 @@ void setup()
 //under this section we are looping the output of the serial monitor displaying the IP for the website and whenever there is a new client it pauses and states so under the serial monitor aswell
 void loop()
 {
+  /*
+screen.setCursor(0, 0);
+  screen.setTextColor(ST77XX_BLACK);
+  screen.setTextSize(2);
+  screen.setTextWrap(true);
+  // displays the temperature on the screen
+  screen.print(F("C = "));
+  screen.print(thermocouple.readCelsius());
+*/
+
+  // basic readout test, just print the current temp
+ 
+  Serial.print("C = ");
+  Serial.println(thermocouple.readCelsius());
+  Serial.print("F = ");
+  Serial.println(thermocouple.readFahrenheit());
+ 
+  // For the MAX6675 to update, you must delay AT LEAST 250ms between reads!
+  delay(1000);
+
 
   Serial.print("Use http://");
   Serial.println(WiFi.localIP());
@@ -96,6 +152,7 @@ void loop()
             client.println("Refresh: 30"); // refresh and include in testing 5 was too quick but lonegr like a minute is morte than necesery
             client.println();
 
+
 //below is the start to the webpage stating that ist in html, and then further goes on to clasify fonts and background colours
             client.println("<!DOCTYPE HTML>");
             client.println("<html>");                                                                                                                  // from this to next /html its the webpage
@@ -103,7 +160,7 @@ void loop()
             client.println("<style>html{font-family: Arial; background-color: white;}table, th, td{border: 1px solid; boareder-collapse: collapse;}"); // only cplour if theres a
             client.println("</style>");
             client.println("<h1>The Meat Stick<h1>");    // Heading of the web page
-            client.println("<h2>The Temperature </h2>"); // h2 to make the headingh smaller
+            client.println("<h2>The Temperature is 92 Degrees Celcius </h2>"); // h2 to make the headingh smaller
             client.println("<h2 style=\"font-family: 'Great Vibes', cursive; font-size: 36px; color: #513ccc; font-style: italic;\">Connor's Meat Guide</h2>"); //this line is giving the heading "Connors Meat Guide" its font, italics and colour (Royal Blue)
 
             int sensorReading = analogRead(SENSORPIN);
