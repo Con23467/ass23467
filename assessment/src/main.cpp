@@ -99,12 +99,12 @@ pinMode(TFT_BACKLITE, OUTPUT);
 //under this section we are looping the output of the serial monitor displaying the IP for the website and whenever there is a new client it pauses and states so under the serial monitor aswell
 void loop()
 {
-  /*
+  /* 
 screen.setCursor(0, 0);
   screen.setTextColor(ST77XX_BLACK);
   screen.setTextSize(2);
   screen.setTextWrap(true);
-  // displays the temperature on the screen
+  //displays the temperature on the screen
   screen.print(F("C = "));
   screen.print(thermocouple.readCelsius());
 */
@@ -226,6 +226,7 @@ screen.setCursor(0, 0);
   //HAN Notes - What does this do?
             client.println(R"rawliteral(
 <script>
+//in this section we are getting references to HTML elements from their Ids
   const settings = document.getElementById('settings');
   const section = document.getElementById('temperature-section');
   const closeBtn = document.getElementById('close-btn');
@@ -233,41 +234,47 @@ screen.setCursor(0, 0);
   const presetInput = document.getElementById('preset');
   const currentTemp = document.getElementById('current-temp');
 
-  // Load saved temperature (if exists)
+  // Load saved PRESET temperature from the localStorage (if one has been put in)
   const savedTemp = localStorage.getItem('presetTemp');
+  //If a savedTemp = localStorage.getItem('presetTemp');
   if (savedTemp !== null) {
+  //If a saved temperature exists, show it on the page
     currentTemp.innerHTML = savedTemp + '°C';
   } else {
+   //defult to 24°C
     currentTemp.innerHTML = '24°C'; // default starting value
   }
 
-  // Show the settings panel (manual close only)
+  // show the settings pannel when the user clicks "Settings" ---
   settings.onclick = function() {
-    section.style.display = 'block';
-    settings.innerHTML = 'Settings Page:';
+    section.style.display = 'block'; //makes temperature section avaliable
+    settings.innerHTML = 'Settings Page:'; //chnages button text to indicate active state
   }
 
-  // Close button hides the section
+  // Close button hides the section when the user clicks "Close"
   closeBtn.onclick = function() {
-    section.style.display = 'none';
-    settings.innerHTML = 'Settings';
+    section.style.display = 'none'; //hides the settings section again
+    settings.innerHTML = 'Settings'; //resets button text
   }
 
   // When user sets a new preset
   setBtn.onclick = function() {
-    const newTemp = parseInt(presetInput.value);
+    const newTemp = parseInt(presetInput.value); //convert input string into integer
+    //valadation: ensure input is a number
     if (isNaN(newTemp)) {
       alert('Please enter a valid temperature between 0 and 100°C.');
       return;
     }
+      //valadation: ensure the temp is within realistic range
     if (newTemp < 0 || newTemp > 100) {
       alert('Temperature must be between 0 and 100°C.');
       return;
     }
 
-    // Save and display the new temperature
+    // Save and display the new temperature (only valid temps)
     currentTemp.innerHTML = newTemp + '°C';
     localStorage.setItem('presetTemp', newTemp);
+    //Give the user feedback
     alert('Preset temperature set to ' + newTemp + '°C');
   }
 </script>
