@@ -12,10 +12,6 @@ const char PASSWORD[] = SECRET_PASS;
 //HAN Notes - What does this do?
 WiFiServer server(80);
 
-const byte MEATPIN = 13;   //my meatpin (thermocouples)
-const byte SENSORPIN = A5; //pin connection
-
-
 int thermoDO = GPIO_NUM_37;
 int thermoCS = GPIO_NUM_35;
 int thermoCLK = 6;
@@ -78,14 +74,6 @@ pinMode(TFT_BACKLITE, OUTPUT);
   // wait for MAX chip to stabilize
   delay(500);
 
-  /*
-  //HAN Notes - What does this do?
-  pinMode(MEATPIN, OUTPUT);
-  pinMode(SENSORPIN, INPUT); // can have room and meat temps
-
-  Serial.begin(115200);
-  delay(5000);
-*/
   //HAN notes - What does this do?
   initWiFi();
   
@@ -99,7 +87,8 @@ pinMode(TFT_BACKLITE, OUTPUT);
 //under this section we are looping the output of the serial monitor displaying the IP for the website and whenever there is a new client it pauses and states so under the serial monitor aswell
 void loop()
 {
-  /* 
+  
+  //printing on ESP32 Screen
 screen.setCursor(0, 0);
   screen.setTextColor(ST77XX_BLACK);
   screen.setTextSize(2);
@@ -107,16 +96,12 @@ screen.setCursor(0, 0);
   //displays the temperature on the screen
   screen.print(F("C = "));
   screen.print(thermocouple.readCelsius());
-*/
 
   // basic readout test, just print the current temp
- 
   Serial.print("C = ");
   Serial.println(thermocouple.readCelsius());
-  Serial.print("F = ");
-  Serial.println(thermocouple.readFahrenheit());
  
-  // For the MAX6675 to update, you must delay AT LEAST 250ms between reads!
+  //1 sec delay for the MAX6675 to update
   delay(1000);
 
 
@@ -160,12 +145,11 @@ screen.setCursor(0, 0);
             client.println("<style>html{font-family: Arial; background-color: white;}table, th, td{border: 1px solid; boareder-collapse: collapse;}"); // only cplour if theres a
             client.println("</style>");
             client.println("<h1>The Meat Stick<h1>");    // Heading of the web page
-            client.println("<h2>The Temperature is 92 Degrees Celcius </h2>"); // h2 to make the headingh smaller
-            client.println("<h2 style=\"font-family: 'Great Vibes', cursive; font-size: 36px; color: #513ccc; font-style: italic;\">Connor's Meat Guide</h2>"); //this line is giving the heading "Connors Meat Guide" its font, italics and colour (Royal Blue)
+            client.print("<h2>The Temperature is  </h2>"); // h2 to make the headingh smaller
+            client.print(thermocouple.readCelcius()); //printing celcius value from MAX6675 module
+            client.println("<h2> Degrees Celcius </h2>"); //stating unit
 
-            int sensorReading = analogRead(SENSORPIN);
-            // client.print("Temperature is: <tr> "); //use output the value of an analog input pin
-            client.print(sensorReading);
+            client.println("<h2 style=\"font-family: 'Great Vibes', cursive; font-size: 36px; color: #513ccc; font-style: italic;\">Connor's Meat Guide</h2>"); //this line is giving the heading "Connors Meat Guide" its font, italics and colour (Royal Blue)
 
             //below is my table of meat types. Under each section it displays the Type of cook (under heading Steak Type), then under Colour - the different colours and lastly the ideal temperatures under Temperature (degrees C)
             client.println("<table>"); //startys the table/opens the command for the table
@@ -222,8 +206,6 @@ screen.setCursor(0, 0);
             client.println("<button id='set-btn'>Set</button>");//this is the set button command - once clicked the users preset te,perature will now be stored under the settings display
             client.println("<button id='close-btn'>Close</button>");//this is the close button on the settings page, once clicked the settings page disappears
             client.println("</div>");
-
-  //HAN Notes - What does this do?
             client.println(R"rawliteral(
 <script>
 //in this section we are getting references to HTML elements from their Ids
